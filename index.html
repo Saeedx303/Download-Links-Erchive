@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Download Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 0;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .link-input {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .link-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+        }
+        .link-input button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        .link-input button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        ul li a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Download Page</h1>
+    </header>
+    <div class="container">
+        <h2>Add Download Links</h2>
+        <div class="link-input">
+            <input type="text" id="linkInput" placeholder="Enter the URL here">
+            <button onclick="addLink()">Add Link</button>
+        </div>
+        <ul id="linkList">
+            <!-- Links will appear here -->
+        </ul>
+    </div>
+
+    <script>
+        // Function to load links from local storage
+        function loadLinks() {
+            const savedLinks = JSON.parse(localStorage.getItem('downloadLinks')) || [];
+            const linkList = document.getElementById('linkList');
+            linkList.innerHTML = ''; // Clear existing list
+
+            savedLinks.forEach(link => {
+                const listItem = document.createElement('li');
+                const anchor = document.createElement('a');
+                anchor.href = link;
+                anchor.target = '_blank';
+                anchor.textContent = link;
+                listItem.appendChild(anchor);
+                linkList.appendChild(listItem);
+            });
+        }
+
+        // Function to add a new link
+        function addLink() {
+            const linkInput = document.getElementById('linkInput');
+            const linkValue = linkInput.value.trim();
+
+            if (!linkValue) {
+                alert('Please enter a valid URL.');
+                return;
+            }
+
+            const savedLinks = JSON.parse(localStorage.getItem('downloadLinks')) || [];
+            savedLinks.push(linkValue);
+            localStorage.setItem('downloadLinks', JSON.stringify(savedLinks));
+
+            linkInput.value = '';
+            loadLinks(); // Reload the list
+        }
+
+        // Load the links when the page is loaded
+        window.onload = loadLinks;
+    </script>
+</body>
+</html>
